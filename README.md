@@ -6,7 +6,13 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
     <h1>Setup Laravel10-Satu-Sehat</h1>
     <ol>
         <li><strong>Clone Repository:</strong>
@@ -41,3 +47,4 @@
     <p>Selamat mencoba!</p>
 </body>
 </html>
+
