@@ -23,23 +23,22 @@ class SatuSehatController extends Controller
     {
         $client = new Client();
         try {
-            $response = $client->request('POST', config('services.satusehat.base_uri') . '/oauth2/v1/accesstoken?grant_type=client_credentials', [
-                'form_params' => [
-                    'client_id' => env('SATUSEHAT_CLIENT_KEY'),
-                    'client_secret' => env('SATUSEHAT_CLIENT_SECRET'),
-                ],
-                'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                ],
-            ]);
-
-            $data = json_decode($response->getBody()->getContents(), true);
-            $kode_token = $data['access_token'];
-            $expired_token = Carbon::now()->addSeconds($data['expires_in'])->format('Y-m-d H:i:s');
-
             $accessTokenRecord = AccessToken::find(1);
-
             if ($accessTokenRecord->token == NULL || $accessTokenRecord->expired == NULL || $this->isTokenExpired($accessTokenRecord->expired)) {
+                $response = $client->request('POST', config('services.satusehat.base_uri') . '/oauth2/v1/accesstoken?grant_type=client_credentials', [
+                    'form_params' => [
+                        'client_id' => env('SATUSEHAT_CLIENT_KEY'),
+                        'client_secret' => env('SATUSEHAT_CLIENT_SECRET'),
+                    ],
+                    'headers' => [
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                    ],
+                ]);
+    
+                $data = json_decode($response->getBody()->getContents(), true);
+                $kode_token = $data['access_token'];
+                $expired_token = Carbon::now()->addSeconds($data['expires_in'])->format('Y-m-d H:i:s');
+
                 if ($kode_token) {
                     AccessToken::updateOrCreate(['id' => 1], [
                         'token' => $kode_token,

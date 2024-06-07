@@ -4,72 +4,67 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use GuzzleHttp\Exception\RequestException;
 use App\Models\AccessToken;
-use Carbon\Carbon;
 
 class PractitionerController extends Controller
 {
-    protected $baseUri;
-
-    public function __construct()
+    public function SearchId(Request $request)
     {
-        $this->baseUri = config('services.satusehat.base_uri');
-        \Log::info('Using base URI: ', ['base_uri' => $this->baseUri]);
+        $accessToken = AccessToken::find(1)->token;
+        $accessTokenExpiry = AccessToken::find(1)->expired;
+        $practitionerId = $request->input('id'); // Mengambil ID dari input form
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken
+        ])->get(env('SATUSEHAT_FHIR_URL').'/Practitioner/' . $practitionerId);
+
+        $practitioner = $response->json();
+
+        return view('practitioner.search-by-id', compact('practitioner','practitionerId','accessToken','accessTokenExpiry'));
     }
 
-    private function getAccessToken()
+    public function SearchNik(Request $request)
     {
-        $accessTokenRecord = AccessToken::find(1);
+        $accessToken = AccessToken::find(1)->token;
+        $accessTokenExpiry = AccessToken::find(1)->expired;
+        $practitionerNik = $request->input('nik');
 
-        if (!$accessTokenRecord || Carbon::now()->gt(Carbon::parse($accessTokenRecord->expired))) {
-            $satuSehatController = new SatuSehatController();
-            $newToken = $satuSehatController->getAccessToken();
-            \Log::info('Generated new access token: ', ['token' => $newToken]);
-            return $newToken;
-        }
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken
+        ])->get(env('SATUSEHAT_FHIR_URL').'/Practitioner?identifier=https://fhir.kemkes.go.id/id/nik|' . $practitionerNik);
 
-        \Log::info('Using existing access token: ', ['token' => $accessTokenRecord->token]);
-        return $accessTokenRecord->token;
+        $practitioner = $response->json();
+
+        return view('practitioner.search-by-nik', compact('practitioner','practitionerNik','accessToken','accessTokenExpiry'));
     }
 
-    public function search(Request $request)
+    public function SearchName(Request $request)
     {
-        $accessToken = $this->getAccessToken();
+        $accessToken = AccessToken::find(1)->token;
+        $accessTokenExpiry = AccessToken::find(1)->expired;
+        $practitionerName = $request->input('name');
+        $practitionerGender = $request->input('gender');
+        $practitionerBirthdate = $request->input('birthdate');
 
-        if (!$accessToken) {
-            return response()->json(['error' => 'Unable to retrieve access token'], 500);
-        }
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken
+        ])->get(env('SATUSEHAT_FHIR_URL').'/Practitioner?name='.$practitionerName.'&gender='.$practitionerGender.'&birthdate=' . $practitionerBirthdate);
 
-        $id = $request->input('id');
-        $nik = $request->input('nik');
-        $name = $request->input('name');
-        $gender = $request->input('gender');
-        $birthdate = $request->input('birthdate');
+        $practitioner = $response->json();
 
-        $url = $this->baseUri . '/fhir-r4/v1/Practitioner';
+        return view('practitioner.search-by-name', compact('practitioner','practitionerName','practitionerGender','practitionerBirthdate','accessToken','accessTokenExpiry'));
+    }
 
-        try {
-            if ($id) {
-                $url .= '/' . $id;
-            } elseif ($nik) {
-                $url .= '?identifier=https://fhir.kemkes.go.id/id/nik|' . $nik;
-            } elseif ($name && $gender && $birthdate) {
-                $url .= "?name=$name&gender=$gender&birthdate=$birthdate";
-            } else {
-                return view('00Resources.practitioner.index', ['error' => 'Incomplete search criteria']);
-            }
+    public function view($id)
+    {
+        $accessToken = AccessToken::find(1)->token;
 
-            $response = Http::withToken($accessToken)->get($url);
-            $data = $response->json();
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken
+        ])->get(env('SATUSEHAT_FHIR_URL').'/Practitioner/' . $id);
 
-            if ($response->successful()) {
-                return view('00Resources.practitioner.index', ['practitioner' => $data]);
-            } else {
-                return view('00Resources.practitioner.index', ['error' => 'Failed to fetch data from the API']);
-            }
-        } catch (RequestException $e) {
-            return view('00Resources.practitioner.index', ['error' => 'Request failed: ' . $e->getMessage()]);
-        }
+        $practitioner = $response->json();
+
+        return view('practitioner.view-practitioner', compact('practitioner'));
     }
 }
