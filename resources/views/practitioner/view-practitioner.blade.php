@@ -5,14 +5,34 @@
     <h1>Detail Practitioner</h1>
     <div class="card">
         <div class="card-body">
-            <h2>{{ $practitioner['name'][0]['text'] ?? 'N/A' }}</h2>
+            <h2>
+            @isset($practitioner['name'][0]['prefix'])
+                @foreach($practitioner['name'][0]['prefix'] as $prefix)
+                    {{ $prefix }} 
+                @endforeach 
+            @endisset
+                {{ $practitioner['name'][0]['text'] ?? 'N/A' }}
+            @isset($practitioner['name'][0]['suffix'])
+                @foreach($practitioner['name'][0]['suffix'] as $prefix)
+                    {{ $prefix }} 
+                @endforeach
+            @endisset
+            </h2>
             <p><strong>ID:</strong> {{ $practitioner['id'] }}</p>
-            <p><strong>NIK:</strong> {{ $practitioner['identifier'][1]['value'] }}</p>
+            <p><strong>NIK:</strong> {{ $practitioner['identifier'][1]['value'] ?? 'N/A' }}</p>
             <p><strong>Gender:</strong> {{ $practitioner['gender'] ?? 'N/A' }}</p>
             <p><strong>Birth Date:</strong> {{ $practitioner['birthDate'] ?? 'N/A' }}</p>
             <p><strong>Address:</strong> 
                 @if(isset($practitioner['address'][0]))
-                    {{ $practitioner['address'][0]['line'][0] ?? 'N/A' }}, {{ $practitioner['address'][0]['city'] ?? 'N/A' }}
+                    {{ $practitioner['address'][0]['line'][0] ?? 'N/A' }}, 
+                    {{ $practitioner['address'][0]['city'] ?? 'N/A' }},
+                    {{ $practitioner['address'][0]['postalCode'] ?? 'N/A' }},
+                    {{ $practitioner['address'][0]['country'] ?? 'N/A' }}
+                    <br>
+                    <strong>Administrative Codes:</strong><br>
+                    @foreach($practitioner['address'][0]['extension'][0]['extension'] as $code)
+                        {{ ucfirst($code['url']) }}: {{ $code['valueCode'] }}<br>
+                    @endforeach
                 @endif
             </p>
             <p><strong>Phone:</strong> 

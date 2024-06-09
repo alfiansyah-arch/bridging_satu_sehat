@@ -35,18 +35,16 @@
                 <a class="nav-link" href="{{route('satusehat.index')}}">Generate Token</a>
             </li>
             @php
-            use App\Models\AccessToken;
-            $accessToken = AccessToken::find(1);
+                use App\Models\AccessToken;
+                $accessToken = AccessToken::find(1);
             @endphp
-            @if($accessToken->token !== NULL)
-                @if($accessToken->expired !== NULL || $accessToken->expired !== 'EXPIRED')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('practitioner.search-by-id')}}">Practitioners</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{('/')}}">Organization</a>
-                    </li>
-                @endif
+            @if($accessToken && $accessToken->expired >= now())
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('practitioner.search-by-id') }}">Practitioners</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('organization.search-by-id') }}">Organization</a>
+                </li>
             @endif
             <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -72,6 +70,9 @@
         <script>
             $(document).ready(function() {
                 $('#practitioners-table').DataTable();
+            });
+            $(document).ready(function() {
+                $('#organizations-table').DataTable();
             });
         </script>
     </body>

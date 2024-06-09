@@ -15,47 +15,23 @@
     @endif
 
     <!-- Token Information -->
-    @if(isset($accessToken))
+    
         <div class="card mt-4">
-            <div class="card-body">
-                <h5 class="card-title">Informasi Akses Token</h5>
-                <ul class="list-group">
-                    <li class="list-group-item">Token: <b>{{ $accessToken }}</b></li>
-                    @if(isset($accessTokenExpiry))
-                    <li class="list-group-item">
-                        <p>Akses token akan kadaluarsa pada: <b>{{ $accessTokenExpiry }}</b></p>
-                        <p>Hitung mundur: <span id="token-expiry-countdown">{{ $accessTokenExpiry }}</span></p>
-                    </li>
-                    @endif
-                </ul>
-            </div>
+            @if(isset($accessToken))
+                <div class="card-body">
+                    <h5 class="card-title">Informasi Akses Token</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">Token: <b>{{ $accessToken }}</b></li>
+                        @if(isset($accessTokenExpiry))
+                        <li class="list-group-item">
+                            <p>Akses token akan kadaluarsa pada: <b>{{ $accessTokenExpiry }}</b></p>
+                            <p>Hitung mundur: <span id="token-expiry-countdown">{{ $accessTokenExpiry }}</span></p>
+                        </li>
+                        @endif
+                    </ul>
+                </div>
+                @endif
         </div>
-    @endif
-
-    <!-- Practitioner Information -->
-    @if(!empty($practitioners))
-        <div class="card mt-4">
-            <div class="card-body">
-                <h5 class="card-title">Data Practitioner</h5>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nama</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($practitioners as $practitioner)
-                            <tr>
-                                <td>{{ $practitioner['id'] }}</td>
-                                <td>{{ $practitioner['name'] }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    @endif
 </div>
 
 <!-- Countdown Timer Script -->

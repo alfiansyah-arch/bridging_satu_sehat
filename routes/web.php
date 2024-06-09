@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PractitionerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SatuSehatController;
@@ -22,8 +23,14 @@ Route::get('/', function () {
 Route::get('/satusehat', [SatuSehatController::class, 'index'])->name('satusehat.index');
 Route::get('/generate-token', [SatuSehatController::class, 'getAccessToken'])->name('generate-token');
 
+
 // Controller Practitioner Controller
 Route::get('/practitioner-by-id', [PractitionerController::class, 'SearchId'])->name('practitioner.search-by-id');
 Route::get('/practitioner-by-nik', [PractitionerController::class, 'SearchNik'])->name('practitioner.search-by-nik');
 Route::get('/practitioner-by-name', [PractitionerController::class, 'SearchName'])->name('practitioner.search-by-name');
 Route::get('/practitioners/{id}', [PractitionerController::class, 'view'])->name('practitioner.view');
+
+// Controller Organization Controller
+Route::get('/organization-by-id', [OrganizationController::class, 'SearchId'])->name('organization.search-by-id');
+Route::get('/organization-by-name', [OrganizationController::class, 'SearchName'])->name('organization.search-by-name');
+Route::get('/organizations/{id}', [OrganizationController::class, 'view'])->name('organization.view');

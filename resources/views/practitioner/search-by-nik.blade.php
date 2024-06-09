@@ -71,7 +71,19 @@
                             @if($practitioner)
                             <td>{{ $practitioner['entry'][0]['resource']['id'] }}</td>
                             <td>{{ $practitioner['entry'][0]['resource']['identifier'][1]['value'] ?? 'N/A' }}</td>
-                            <td>{{ $practitioner['entry'][0]['resource']['name'][0]['text'] ?? 'N/A' }}</td>
+                            <td>
+                            @isset($practitioner['entry'][0]['resource']['name'][0]['prefix'])
+                            @foreach($practitioner['entry'][0]['resource']['name'][0]['prefix'] as $prefix)
+                                {{ $prefix }} 
+                            @endforeach 
+                            @endisset
+                            {{ $practitioner['entry'][0]['resource']['name'][0]['text'] ?? 'N/A' }} 
+                            @isset($practitioner['entry'][0]['resource']['name'][0]['suffix'])
+                            @foreach($practitioner['entry'][0]['resource']['name'][0]['suffix'] as $suffix)
+                                {{ $suffix }} 
+                            @endforeach
+                            @endisset
+                            </td>
                             <td>{{ $practitioner['entry'][0]['resource']['gender'] ?? 'N/A' }}</td>
                             <td>{{ $practitioner['entry'][0]['resource']['birthDate'] ?? 'N/A' }}</td>
                             <td>{{ $practitioner['entry'][0]['resource']['address'][0]['line'][0] ?? 'N/A' }}, {{ $practitioner['entry'][0]['resource']['address'][0]['city'] ?? 'N/A' }}</td>

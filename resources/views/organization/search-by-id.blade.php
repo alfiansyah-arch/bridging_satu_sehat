@@ -24,25 +24,24 @@
                 </div>
             </div>
     @endif
-    <h1>Data Information Practitioners!</h1>
+    <h1>Data Information Organization!</h1>
     <div class="dropdown show">
         <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Cari Berdasarkan
         </a>
 
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="{{route('practitioner.search-by-id')}}">ID</a>
-            <a class="dropdown-item" href="{{route('practitioner.search-by-nik')}}">NIK</a>
-            <a class="dropdown-item" href="{{route('practitioner.search-by-name')}}">Name, Gender, and Birthdate</a>
+            <a class="dropdown-item" href="{{route('organization.search-by-id')}}">ID</a>
+            <a class="dropdown-item" href="{{route('organization.search-by-name')}}">Name</a>
         </div>
     </div>
     <br>
     <div class="card mb-3">
         <div class="card-body">
-            <form action="{{ route('practitioner.search-by-id') }}" method="GET">
+            <form action="{{ route('organization.search-by-id') }}" method="GET">
                 <div class="form-group">
                     <label for="id">Search by ID:</label>
-                    <input type="text" class="form-control" id="id" name="id" placeholder="Enter practitioner ID">
+                    <input type="text" class="form-control" id="id" name="id" placeholder="Enter organization ID">
                 </div>
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
@@ -51,44 +50,41 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table id="practitioners-table" class="table display">
+                <table id="organizations-table" class="table display">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>NIK</th>
                             <th>Name</th>
-                            <th>Gender</th>
-                            <th>Birth Date</th>
+                            <th>Country</th>
+                            <th>City</th>
                             <th>Address</th>
                             <th>Phone</th>
                             <th>Email</th>
+                            <th>Website</th>
+                            <th>Tipe</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                        @if(isset($practitionerId))
-                            @if($practitioner)
-                            <td>{{ $practitioner['id'] }}</td>
-                            <td>{{ $practitioner['identifier'][1]['value'] ?? 'N/A' }}</td>
+                        @if(isset($organizationId))
+                            @if($organization)
+                            <td>{{ $organization['id'] ?? 'N/A' }}</td>
+                            <td>{{ $organization['name'] ?? 'N/A' }}</td>
+                            <td>{{ $organization['address'][0]['country'] ?? 'N/A' }}</td>
+                            <td>{{ $organization['address'][0]['city'] ?? 'N/A' }}</td>
                             <td>
-                            @isset($practitioner['name'][0]['prefix'])
-                            @foreach($practitioner['name'][0]['prefix'] as $prefix)
-                                {{ $prefix }} 
-                            @endforeach
-                            @endisset
-                            {{ $practitioner['name'][0]['text'] ?? 'N/A' }}
-                            @isset($practitioner['name'][0]['suffix'])
-                            @foreach($practitioner['name'][0]['suffix'] as $suffix)
-                                {{ $suffix }} 
-                            @endforeach
-                            @endisset
+                                {{ $organization['address'][0]['line'][0] ?? 'N/A' }}
+                                , {{ $organization['address'][0]['extension'][0]['extension'][3]['url'] ?? 'N/A' }}
+                                , {{ $organization['address'][0]['extension'][0]['extension'][2]['url'] ?? 'N/A' }}
+                                , {{ $organization['address'][0]['extension'][0]['extension'][1]['url'] ?? 'N/A' }}
+                                , {{ $organization['address'][0]['extension'][0]['extension'][0]['url'] ?? 'N/A' }}
+                                , {{ $organization['address'][0]['postalCode'] ?? 'N/A' }}
                             </td>
-                            <td>{{ $practitioner['gender'] ?? 'N/A' }}</td>
-                            <td>{{ $practitioner['birthDate'] ?? 'N/A' }}</td>
-                            <td>{{ $practitioner['address'][0]['line'][0] ?? 'N/A' }}, {{ $practitioner['address'][0]['city'] ?? 'N/A' }}</td>
-                            <td>{{ $practitioner['telecom'][0]['value'] ?? 'N/A' }}</td>
-                            <td>{{ $practitioner['telecom'][2]['value'] ?? 'N/A' }}</td>
+                            <td>{{ $organization['telecom'][0]['value'] ?? 'N/A' }}</td>
+                            <td>{{ $organization['telecom'][1]['value'] ?? 'N/A' }}</td>
+                            <td>{{ $organization['telecom'][2]['value'] ?? 'N/A' }}</td>
+                            <td>{{ $organization['type'][0]['coding'][0]['display'] ?? 'N/A' }}</td>
                             <td>
                                 <div class="dropdown show">
                                     <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -96,7 +92,7 @@
                                     </a>
 
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="{{ route('practitioner.view', $practitioner['id']) }}">View Detail</a>
+                                        <a class="dropdown-item" href="{{ route('organization.view', $organization['id']) }}">View Detail</a>
                                         <a class="dropdown-item" href="#">Another action</a>
                                         <a class="dropdown-item" href="#">Something else here</a>
                                     </div>
