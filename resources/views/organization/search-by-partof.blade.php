@@ -49,10 +49,10 @@
     <br>
     <div class="card mb-3">
         <div class="card-body">
-            <form action="{{ route('organization.search-by-name') }}" method="GET">
+            <form action="{{ route('organization.search-by-partof') }}" method="GET">
                 <div class="form-group">
-                    <label for="name">Search by Name:</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter organization name">
+                    <label for="partof">Search by Part Of (Organization ID at Satu Sehat):</label>
+                    <input type="text" class="form-control" id="partof" name="partof" placeholder="Enter organization partof">
                 </div>
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
@@ -83,9 +83,7 @@
                                     <td>{{ $entry['resource']['name'] ?? 'N/A' }}</td>
                                     <td>{{ $entry['resource']['address'][0]['country'] ?? 'N/A' }}</td>
                                     <td>{{ $entry['resource']['address'][0]['city'] ?? 'N/A' }}</td>
-                                    <td>
-                                        {{ $entry['resource']['address'][0]['line'][0] ?? 'N/A' }}
-                                    </td>
+                                    <td>{{ $entry['resource']['address'][0]['line'][0] ?? 'N/A' }}</td>
                                     <td>
                                         @if(isset($entry['resource']['telecom']))
                                             @foreach($entry['resource']['telecom'] as $telecom)

@@ -2,6 +2,16 @@
 
 @section('content')
 <div class="container">
+@if(session()->has('success'))
+    <div class="alert alert-success">
+        {{ session()->get('success') }}
+    </div>
+@endif
+@if(session()->has('error'))
+    <div class="alert alert-danger">
+        {{ session()->get('error') }}
+    </div>
+@endif
     @if(isset($accessToken))
             <div class="card mt-4">
                 <div class="card-body">
@@ -33,6 +43,7 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <a class="dropdown-item" href="{{route('organization.search-by-id')}}">ID</a>
             <a class="dropdown-item" href="{{route('organization.search-by-name')}}">Name</a>
+            <a class="dropdown-item" href="{{route('organization.search-by-partof')}}">Partof</a>
         </div>
     </div>
     <br>
@@ -93,8 +104,7 @@
 
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                         <a class="dropdown-item" href="{{ route('organization.view', $organization['id']) }}">View Detail</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        <a class="dropdown-item" href="{{route('organization.edit', $organization['id'])}}">Edit</a>
                                     </div>
                                 </div>
                             </td>

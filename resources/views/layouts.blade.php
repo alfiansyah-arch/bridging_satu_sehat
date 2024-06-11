@@ -42,20 +42,26 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('practitioner.search-by-id') }}">Practitioners</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('organization.search-by-id') }}">Organization</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownOrganization" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Organization
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownOrganization">
+                    <a class="dropdown-item" href="{{ route('organization.search-by-id') }}">Search</a>
+                    <a class="dropdown-item" href="{{ route('organization.create') }}">Create</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLocation" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Location
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownLocation">
+                    <a class="dropdown-item" href="{{ route('location.search-by-id') }}">Search</a>
+                    <a class="dropdown-item" href="{{ route('location.create') }}">Create</a>
+                    </div>
                 </li>
             @endif
-            <!-- <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Practitioners
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#"></a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </li> -->
+            
             </ul>
         </div>
         </nav>

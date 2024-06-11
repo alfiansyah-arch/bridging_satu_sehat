@@ -28,41 +28,41 @@
             </div>
         </div>
     @else
-        <div class="card mt-4">
-            <div class="card-body">
-                <a href="{{route('generate-token')}}" class="btn btn-success text-xs">Generate Token</a>
-            </div>
+    <div class="card mt-4">
+        <div class="card-body">
+            <a href="{{route('generate-token')}}" class="btn btn-success text-xs">Generate Token</a>
         </div>
+    </div>
     @endif
 
-    <h1>Data Informasi Organisasi!</h1>
+    <h1>Cari Lokasi Berdasarkan Nama</h1>
     <div class="dropdown show">
         <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Cari Berdasarkan
         </a>
+
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="{{route('organization.search-by-id')}}">ID</a>
-            <a class="dropdown-item" href="{{route('organization.search-by-name')}}">Name</a>
-            <a class="dropdown-item" href="{{route('organization.search-by-partof')}}">Partof</a>
+            <a class="dropdown-item" href="{{route('location.search-by-id')}}">ID</a>
+            <a class="dropdown-item" href="{{route('location.search-by-name')}}">Nama</a>
         </div>
     </div>
     <br>
     <div class="card mb-3">
         <div class="card-body">
-            <form action="{{ route('organization.search-by-name') }}" method="GET">
+            <form action="{{ route('location.search-by-name') }}" method="GET">
                 <div class="form-group">
                     <label for="name">Search by Name:</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter organization name">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter location name">
                 </div>
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
         </div>
     </div>
-
+    @if(isset($location))
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table id="organizations-table" class="table display">
+                <table id="locations-table" class="table display">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -72,58 +72,45 @@
                             <th>Address</th>
                             <th>Phone</th>
                             <th>Email</th>
+                            <th>Website</th>
+                            <th>Type</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if(isset($organization['entry']))
-                            @foreach($organization['entry'] as $entry)
+                        @if(isset($location['entry']) && count($location['entry']) > 0)
+                            @foreach($location['entry'] as $entry)
+                                @php
+                                    $loc = $entry['resource'];
+                                @endphp
                                 <tr>
-                                    <td>{{ $entry['resource']['id'] ?? 'N/A' }}</td>
-                                    <td>{{ $entry['resource']['name'] ?? 'N/A' }}</td>
-                                    <td>{{ $entry['resource']['address'][0]['country'] ?? 'N/A' }}</td>
-                                    <td>{{ $entry['resource']['address'][0]['city'] ?? 'N/A' }}</td>
+                                    <td>{{ $loc['id'] ?? 'N/A' }}</td>
+                                    <td>{{ $loc['name'] ?? 'N/A' }}</td>
+                                    <td>{{ $loc['address']['country'] ?? 'N/A' }}</td>
+                                    <td>{{ $loc['address']['city'] ?? 'N/A' }}</td>
                                     <td>
-                                        {{ $entry['resource']['address'][0]['line'][0] ?? 'N/A' }}
+                                        {{ $loc['address']['line'][0] ?? 'N/A' }},
+                                        {{ $loc['address']['postalCode'] ?? 'N/A' }}
                                     </td>
+                                    <td>{{ $loc['telecom'][0]['value'] ?? 'N/A' }}</td>
+                                    <td>{{ $loc['telecom'][1]['value'] ?? 'N/A' }}</td>
+                                    <td>{{ $loc['telecom'][2]['value'] ?? 'N/A' }}</td>
+                                    <td>{{ $loc['physicalType']['coding'][0]['display'] ?? 'N/A' }}</td>
                                     <td>
-                                        @if(isset($entry['resource']['telecom']))
-                                            @foreach($entry['resource']['telecom'] as $telecom)
-                                                @if($telecom['system'] == 'phone')
-                                                    {{ $telecom['value'] }}
-                                                @endif
-                                            @endforeach
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if(isset($entry['resource']['telecom']))
-                                            @foreach($entry['resource']['telecom'] as $telecom)
-                                                @if($telecom['system'] == 'email')
-                                                    {{ $telecom['value'] }}
-                                                @endif
-                                            @endforeach
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
-                                    <td>
-                                    <div class="dropdown show">
-                                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Aksi
-                                        </a>
-
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" href="{{ route('organization.view', $entry['resource']['id']) }}">View Detail</a>
+                                        <div class="dropdown show">
+                                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Aksi
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <a class="dropdown-item" href="{{ route('location.view', $loc['id']) }}">View Detail</a>
+                                            </div>
                                         </div>
-                                    </div>
                                     </td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="8" class="text-center">Data Tidak Ditemukan</td>
+                                <td colspan="10" class="text-center">Data Tidak Ditemukan</td>
                             </tr>
                         @endif
                     </tbody>
@@ -131,8 +118,8 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
-
 <script>
     var countDownDate = new Date('{{ $accessTokenExpiry }}').getTime();
 

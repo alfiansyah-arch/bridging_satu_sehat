@@ -5,13 +5,17 @@
     <h1>Bridging Satu Sehat!</h1>
 
     <!-- Success Message -->
-    @if($successMessage)
-        <div class="alert alert-success">{{ $successMessage }}</div>
+    @if(isset($successMessage))    
+        @if($successMessage)
+            <div class="alert alert-success">{{ $successMessage }}</div>
+        @endif
     @endif
 
     <!-- Error Message -->
-    @if($errorMessage)
-        <div class="alert alert-danger">{{ $errorMessage }}</div>
+    @if(isset($errorMessage))    
+        @if($errorMessage)
+            <div class="alert alert-danger">{{ $errorMessage }}</div>
+        @endif
     @endif
 
     <!-- Token Information -->
@@ -31,10 +35,14 @@
                     </ul>
                 </div>
                 @endif
+                <div class="card-footer">
+                    <a href="{{route('generate-token')}}" class="btn btn-success">Generate Token</a>
+                </div>
         </div>
 </div>
 
 <!-- Countdown Timer Script -->
+@if(isset($accessTokenExpiry))    
 <script>
     var countDownDate = new Date('{{ $accessTokenExpiry }}').getTime();
 
@@ -55,4 +63,5 @@
         }
     }, 1000);
 </script>
+@endif
 @endsection

@@ -72,14 +72,13 @@ class SatuSehatController extends Controller
         return Carbon::now()->gt(Carbon::parse($expiresAt));
     }
 
-    public function index()
+    public function generateToken()
     {
         $successMessage = '';
         $errorMessage = '';
         $accessTokenData = null;
         $accessToken = null;
         $accessTokenExpiry = null;
-        $practitioners = [];
 
         try {
             $accessTokenData = $this->getAccessToken();
@@ -95,9 +94,15 @@ class SatuSehatController extends Controller
                 }
             }
         } catch (\Exception $e) {
-            return response()->json(['Refresh Halaman error :' => $e->getMessage()], 500);
+            // $errorMessage =  response()->json(['Refresh Halaman error :' => $e->getMessage()], 500);
+            $errorMessage =  'Refresh Halaman';
+            return view('generate-token', compact('successMessage', 'errorMessage', 'accessToken', 'accessTokenExpiry'));
         }
 
-        return view('generate-token', compact('successMessage', 'errorMessage', 'accessToken', 'accessTokenExpiry', 'practitioners'));
+        return view('generate-token', compact('successMessage', 'errorMessage', 'accessToken', 'accessTokenExpiry'));
+    }
+    public function index()
+    {
+        return view('generate-token');
     }
 }

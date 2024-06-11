@@ -10,9 +10,13 @@ class PractitionerController extends Controller
 {
     public function SearchId(Request $request)
     {
+        $checkToken = AccessToken::find(1);
+        if($checkToken && $checkToken->expired <= now()){
+            return redirect()->route('satusehat.index');
+        }
         $accessToken = AccessToken::find(1)->token;
         $accessTokenExpiry = AccessToken::find(1)->expired;
-        $practitionerId = $request->input('id'); // Mengambil ID dari input form
+        $practitionerId = $request->input('id');
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $accessToken
@@ -25,6 +29,10 @@ class PractitionerController extends Controller
 
     public function SearchNik(Request $request)
     {
+        $checkToken = AccessToken::find(1);
+        if($checkToken && $checkToken->expired <= now()){
+            return redirect()->route('satusehat.index');
+        }
         $accessToken = AccessToken::find(1)->token;
         $accessTokenExpiry = AccessToken::find(1)->expired;
         $practitionerNik = $request->input('nik');
@@ -40,6 +48,10 @@ class PractitionerController extends Controller
 
     public function SearchName(Request $request)
     {
+        $checkToken = AccessToken::find(1);
+        if($checkToken && $checkToken->expired <= now()){
+            return redirect()->route('satusehat.index');
+        }
         $accessToken = AccessToken::find(1)->token;
         $accessTokenExpiry = AccessToken::find(1)->expired;
         $practitionerName = $request->input('name');
@@ -57,6 +69,10 @@ class PractitionerController extends Controller
 
     public function view($id)
     {
+        $checkToken = AccessToken::find(1);
+        if($checkToken && $checkToken->expired <= now()){
+            return redirect()->route('satusehat.index');
+        }
         $accessToken = AccessToken::find(1)->token;
 
         $response = Http::withHeaders([

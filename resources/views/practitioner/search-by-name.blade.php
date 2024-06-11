@@ -2,6 +2,16 @@
 
 @section('content')
 <div class="container">
+@if(session()->has('success'))
+    <div class="alert alert-success">
+        {{ session()->get('success') }}
+    </div>
+@endif
+@if(session()->has('error'))
+    <div class="alert alert-danger">
+        {{ session()->get('error') }}
+    </div>
+@endif
     @if(isset($accessToken))
         <div class="card mt-4">
             <div class="card-body">
