@@ -62,7 +62,7 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table id="locations-table" class="table display">
+                <table id="location-table" class="table display">
                     <thead>
                         <tr>
                             <th>ID</th>

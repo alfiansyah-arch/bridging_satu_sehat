@@ -60,6 +60,15 @@
                     <a class="dropdown-item" href="{{ route('location.create') }}">Create</a>
                     </div>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownEncounter" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Encounter
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownEncounter">
+                    <a class="dropdown-item" href="{{ route('encounter.search-by-id') }}">Search</a>
+                    <a class="dropdown-item" href="{{ route('encounter.create') }}">Create</a>
+                    </div>
+                </li>
             @endif
             
             </ul>
@@ -79,6 +88,12 @@
             });
             $(document).ready(function() {
                 $('#organizations-table').DataTable();
+            });
+            $(document).ready(function() {
+                $('#location-table').DataTable();
+            });
+            $(document).ready(function() {
+                $('#encounter-table').DataTable();
             });
         </script>
     </body>

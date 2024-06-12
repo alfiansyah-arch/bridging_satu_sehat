@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EncounterController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PractitionerController;
@@ -50,3 +51,12 @@ Route::get('/location/create', [LocationController::class, 'create'])->name('loc
 Route::post('/location/post', [LocationController::class, 'postLocation'])->name('location.post');
 Route::get('/location/edit/{id}', [LocationController::class, 'editLocation'])->name('location.edit');
 Route::put('/location/update/{id}', [LocationController::class, 'putLocation'])->name('location.update');
+
+// Controller Encounter Controller
+Route::get('/encounter-by-id', [EncounterController::class, 'SearchId'])->name('encounter.search-by-id');
+Route::get('/encounter-by-name', [EncounterController::class, 'SearchSubject'])->name('encounter.search-by-subject');
+Route::get('/encounters/{id}', [EncounterController::class, 'viewEncounter'])->name('encounter.view');
+Route::get('/encounter/create', [EncounterController::class, 'createEncounter'])->name('encounter.create');
+Route::post('/encounter/store', [EncounterController::class, 'storeEncounter'])->name('encounter.store');
+Route::get('/encounter/edit/{id}', [EncounterController::class, 'editEncounter'])->name('encounter.edit');
+Route::put('/encounter/update/{id}', [EncounterController::class, 'putEncounter'])->name('encounter.update');
