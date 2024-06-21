@@ -69,6 +69,33 @@
                     <a class="dropdown-item" href="{{ route('encounter.create') }}">Create</a>
                     </div>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCondition" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Condition
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCondition">
+                    <a class="dropdown-item" href="{{ route('condition.search-by-subject') }}">Search</a>
+                    <a class="dropdown-item" href="{{ route('condition.create') }}">Create</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownComposition" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Composition
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownComposition">
+                    <a class="dropdown-item" href="{{ route('composition.search-by-id') }}">Search</a>
+                    <a class="dropdown-item" href="{{ route('composition.create') }}">Create</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPatient" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Patient
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownPatient">
+                    <a class="dropdown-item" href="{{ route('patient.search-by-id') }}">Search</a>
+                    <a class="dropdown-item" href="{{ route('patient.create') }}">Create</a>
+                    </div>
+                </li>
             @endif
             
             </ul>

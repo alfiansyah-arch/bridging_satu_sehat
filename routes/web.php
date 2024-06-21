@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\CompositionController;
+use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\EncounterController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PractitionerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SatuSehatController;
@@ -60,3 +63,37 @@ Route::get('/encounter/create', [EncounterController::class, 'createEncounter'])
 Route::post('/encounter/store', [EncounterController::class, 'storeEncounter'])->name('encounter.store');
 Route::get('/encounter/edit/{id}', [EncounterController::class, 'editEncounter'])->name('encounter.edit');
 Route::put('/encounter/update/{id}', [EncounterController::class, 'putEncounter'])->name('encounter.update');
+
+// Controller Condition Controller
+Route::get('/condition-by-id', [ConditionController::class, 'SearchId'])->name('condition.search-by-id');
+Route::get('/condition-by-subject', [ConditionController::class, 'SearchSubject'])->name('condition.search-by-subject');
+Route::get('/condition-by-encounter', [ConditionController::class, 'SearchEncounter'])->name('condition.search-by-encounter');
+Route::get('/condition-by-subject-encounter', [ConditionController::class, 'SearchSubjectEncounter'])->name('condition.search-by-subject-encounter');
+Route::get('/conditions/{id}', [ConditionController::class, 'viewEncounter'])->name('condition.view');
+Route::get('/condition/create', [ConditionController::class, 'createEncounter'])->name('condition.create');
+Route::post('/condition/store', [ConditionController::class, 'storeEncounter'])->name('condition.store');
+Route::get('/condition/edit/{id}', [ConditionController::class, 'editEncounter'])->name('condition.edit');
+Route::put('/condition/update/{id}', [ConditionController::class, 'putEncounter'])->name('condition.update');
+
+// Controller Composition Controller
+Route::get('/composition-by-id', [CompositionController::class, 'SearchId'])->name('composition.search-by-id');
+Route::get('/composition-by-subject', [CompositionController::class, 'SearchSubject'])->name('composition.search-by-subject');
+Route::get('/composition-by-encounter', [CompositionController::class, 'SearchEncounter'])->name('composition.search-by-encounter');
+Route::get('/composition-by-subject-encounter', [CompositionController::class, 'SearchSubjectEncounter'])->name('composition.search-by-subject-encounter');
+Route::get('/compositions/{id}', [CompositionController::class, 'viewEncounter'])->name('composition.view');
+Route::get('/composition/create', [CompositionController::class, 'createEncounter'])->name('composition.create');
+Route::post('/composition/store', [CompositionController::class, 'storeEncounter'])->name('composition.store');
+Route::get('/composition/edit/{id}', [CompositionController::class, 'editEncounter'])->name('composition.edit');
+Route::put('/composition/update/{id}', [CompositionController::class, 'putEncounter'])->name('composition.update');
+
+// Controller Patient Controller
+Route::get('/patient-by-id', [PatientController::class, 'SearchId'])->name('patient.search-by-id');
+Route::get('/patient-by-nik', [PatientController::class, 'SearchNik'])->name('patient.search-by-nik');
+Route::get('/patient-by-bayi', [PatientController::class, 'SearchBayi'])->name('patient.search-by-bayi');
+Route::get('/patient-by-name-birth-nik', [PatientController::class, 'SearchNameBirthNik'])->name('patient.search-by-name-birth-nik');
+Route::get('/patient-by-name-birth-gender', [PatientController::class, 'SearchNameBirthGender'])->name('patient.search-by-name-birth-gender');
+Route::get('/patient/detail-1', [PatientController::class, 'viewDetail1'])->name('patient.view');
+Route::get('/patient/create', function () { return view('patient.form-patient');})->name('patient.form');
+Route::post('/patient/create', [PatientController::class, 'createOrganization'])->name('patient.create');
+Route::get('/patient/edit/{id}', [PatientController::class, 'editOrganization'])->name('patient.edit');
+Route::put('/patient/update/{id}', [PatientController::class, 'updateOrganization'])->name('patient.update');
