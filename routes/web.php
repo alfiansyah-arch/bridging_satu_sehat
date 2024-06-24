@@ -9,6 +9,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PractitionerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SatuSehatController;
+use App\Http\Controllers\ObservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +23,8 @@ use App\Http\Controllers\SatuSehatController;
 */
 
 Route::get('/', function () {
-    return view('layouts');
+    return view('generate-token');
 });
-
-Route::get('/satusehat', [SatuSehatController::class, 'index'])->name('satusehat.index');
 Route::get('/generate-token', [SatuSehatController::class, 'generateToken'])->name('generate-token');
 
 
@@ -97,3 +96,15 @@ Route::get('/patient/create', function () { return view('patient.form-patient');
 Route::post('/patient/create', [PatientController::class, 'createOrganization'])->name('patient.create');
 Route::get('/patient/edit/{id}', [PatientController::class, 'editOrganization'])->name('patient.edit');
 Route::put('/patient/update/{id}', [PatientController::class, 'updateOrganization'])->name('patient.update');
+
+// Controller Observation Controller
+Route::get('/observation-by-id', [ObservationController::class, 'SearchId'])->name('observation.search-by-id');
+Route::get('/observation-by-subject', [ObservationController::class, 'SearchSubject'])->name('observation.search-by-subject');
+Route::get('/observation-by-subject-encounter', [ObservationController::class, 'SearchSubjectEncounter'])->name('observation.search-by-subject-encounter');
+Route::get('/observation-by-encounter', [ObservationController::class, 'SearchEncounter'])->name('observation.search-by-encounter');
+Route::get('/observation-by-service-request', [ObservationController::class, 'SearchServiceRequest'])->name('observation.search-by-service-request');
+Route::get('/observation/detail-1', [ObservationController::class, 'viewDetail1'])->name('observation.view');
+Route::get('/observation/create', function () { return view('observation.form-observation');})->name('observation.form');
+Route::post('/observation/create', [ObservationController::class, 'createObservation'])->name('observation.create');
+Route::get('/observation/edit/{id}', [ObservationController::class, 'editOrganization'])->name('observation.edit');
+Route::put('/observation/update/{id}', [ObservationController::class, 'updateOrganization'])->name('observation.update');

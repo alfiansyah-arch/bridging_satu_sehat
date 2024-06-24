@@ -28,76 +28,9 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{('/')}}">Home</a>
-            </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('satusehat.index')}}">Generate Token</a>
+                <a class="nav-link" href="{{route('generate-token')}}">Home</a>
             </li>
-            @php
-                use App\Models\AccessToken;
-                $accessToken = AccessToken::find(1);
-            @endphp
-            @if($accessToken && $accessToken->expired >= now())
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('practitioner.search-by-id') }}">Practitioners</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownOrganization" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Organization
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownOrganization">
-                    <a class="dropdown-item" href="{{ route('organization.search-by-id') }}">Search</a>
-                    <a class="dropdown-item" href="{{ route('organization.create') }}">Create</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownLocation" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Location
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownLocation">
-                    <a class="dropdown-item" href="{{ route('location.search-by-id') }}">Search</a>
-                    <a class="dropdown-item" href="{{ route('location.create') }}">Create</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownEncounter" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Encounter
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownEncounter">
-                    <a class="dropdown-item" href="{{ route('encounter.search-by-id') }}">Search</a>
-                    <a class="dropdown-item" href="{{ route('encounter.create') }}">Create</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCondition" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Condition
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownCondition">
-                    <a class="dropdown-item" href="{{ route('condition.search-by-subject') }}">Search</a>
-                    <a class="dropdown-item" href="{{ route('condition.create') }}">Create</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownComposition" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Composition
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownComposition">
-                    <a class="dropdown-item" href="{{ route('composition.search-by-id') }}">Search</a>
-                    <a class="dropdown-item" href="{{ route('composition.create') }}">Create</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPatient" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Patient
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownPatient">
-                    <a class="dropdown-item" href="{{ route('patient.search-by-id') }}">Search</a>
-                    <a class="dropdown-item" href="{{ route('patient.create') }}">Create</a>
-                    </div>
-                </li>
-            @endif
-            
             </ul>
         </div>
         </nav>
