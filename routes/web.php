@@ -4,9 +4,11 @@ use App\Http\Controllers\CompositionController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\EncounterController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\MedicationController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PractitionerController;
+use App\Http\Controllers\ProcedureController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SatuSehatController;
 use App\Http\Controllers\ObservationController;
@@ -48,6 +50,7 @@ Route::put('/organization/update/{id}', [OrganizationController::class, 'updateO
 Route::get('/location-by-id', [LocationController::class, 'SearchId'])->name('location.search-by-id');
 Route::get('/location-by-name', [LocationController::class, 'SearchName'])->name('location.search-by-name');
 Route::get('/location-by-partof', [LocationController::class, 'SearchPartOf'])->name('location.search-by-partof');
+Route::get('/location/search-by-org-id', [LocationController::class, 'searchByOrgId'])->name('location.search-by-org-id');
 Route::get('/locations/{id}', [LocationController::class, 'viewLocation'])->name('location.view');
 Route::get('/location/create', [LocationController::class, 'create'])->name('location.create');
 Route::post('/location/post', [LocationController::class, 'postLocation'])->name('location.post');
@@ -92,8 +95,8 @@ Route::get('/patient-by-bayi', [PatientController::class, 'SearchBayi'])->name('
 Route::get('/patient-by-name-birth-nik', [PatientController::class, 'SearchNameBirthNik'])->name('patient.search-by-name-birth-nik');
 Route::get('/patient-by-name-birth-gender', [PatientController::class, 'SearchNameBirthGender'])->name('patient.search-by-name-birth-gender');
 Route::get('/patient/detail-1', [PatientController::class, 'viewDetail1'])->name('patient.view');
-Route::get('/patient/create', function () { return view('patient.form-patient');})->name('patient.form');
-Route::post('/patient/create', [PatientController::class, 'createOrganization'])->name('patient.create');
+Route::get('/patient/create-by-nik', [PatientController::class, 'createByNik'])->name('patient.create-by-nik');
+Route::post('/patient/store-by-nik', [PatientController::class, 'storeByNik'])->name('patient.store-by-nik');
 Route::get('/patient/edit/{id}', [PatientController::class, 'editOrganization'])->name('patient.edit');
 Route::put('/patient/update/{id}', [PatientController::class, 'updateOrganization'])->name('patient.update');
 
@@ -108,3 +111,19 @@ Route::get('/observation/create', function () { return view('observation.form-ob
 Route::post('/observation/create', [ObservationController::class, 'createObservation'])->name('observation.create');
 Route::get('/observation/edit/{id}', [ObservationController::class, 'editOrganization'])->name('observation.edit');
 Route::put('/observation/update/{id}', [ObservationController::class, 'updateOrganization'])->name('observation.update');
+
+// Controller Procedure Controller
+Route::get('/procedure-by-id', [ProcedureController::class, 'SearchId'])->name('procedure.search-by-id');
+Route::get('/procedure-by-subject', [ProcedureController::class, 'SearchSubject'])->name('procedure.search-by-subject');
+Route::get('/procedure-by-encounter', [ProcedureController::class, 'SearchEncounter'])->name('procedure.search-by-encounter');
+Route::get('/procedure-by-subject-encounter', [ProcedureController::class, 'SearchSubjectEncounter'])->name('procedure.search-by-subject-encounter');
+Route::get('/procedures/{id}', [ProcedureController::class, 'viewEncounter'])->name('procedure.view');
+Route::get('/procedure/create', [ProcedureController::class, 'createEncounter'])->name('procedure.create');
+Route::post('/procedure/store', [ProcedureController::class, 'storeEncounter'])->name('procedure.store');
+Route::get('/procedure/edit/{id}', [ProcedureController::class, 'editEncounter'])->name('procedure.edit');
+Route::put('/procedure/update/{id}', [ProcedureController::class, 'putEncounter'])->name('procedure.update');
+
+// Controller Medication Controller
+Route::get('/medication/create', [MedicationController::class, 'create'])->name('medication.create');
+Route::post('/medication/store', [MedicationController::class, 'store'])->name('medication.store');
+Route::get('/medication-by-id', [MedicationController::class, 'SearchId'])->name('medication.search-by-id');

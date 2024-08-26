@@ -131,6 +131,46 @@
             </div>
         </div>
     </div>
+
+    <h2>Data Local Organizations</h2>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="local-organizations-table" class="table display">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>ID</th>
+                            <th>Identifier</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Website</th>
+                            <th>Part Of</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no=0; ?>
+                        @foreach($organizations as $localOrganization)
+                        <?php $no++ ?>
+                        <tr>
+                            <td>{{ $no }}</td>
+                            <td>{{ $localOrganization->id_organization }}</td>
+                            <td>{{ $localOrganization->identifier_value }}</td>
+                            <td>{{ $localOrganization->name }}</td>
+                            <td>{{ $localOrganization->address_line }}, {{ $localOrganization->address_city }}, {{ $localOrganization->address_postal_code }}, {{ $localOrganization->address_country }}</td>
+                            <td>{{ $localOrganization->telecom_phone }}</td>
+                            <td>{{ $localOrganization->telecom_email }}</td>
+                            <td>{{ $localOrganization->telecom_url }}</td>
+                            <td>{{ $localOrganization->part_of_id }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>

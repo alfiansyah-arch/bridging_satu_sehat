@@ -129,6 +129,66 @@
             </div>
         </div>
     </div>
+    <!-- Tabel Kedua -->
+    <h1>Data Informasi Lokasi (Dari Database)</h1>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+            <table id="database-location-table" class="table display">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Identifier Value</th>
+                        <th>Status</th>
+                        <th>Country</th>
+                        <th>City</th>
+                        <th>Address</th>
+                        <th>Phone</th>
+                        <th>Fax</th>
+                        <th>Email</th>
+                        <th>Website</th>
+                        <th>Description</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                        <th>Altitude</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php $no=0; ?>
+                    @foreach($locations as $location)
+                    @php
+                        // Check if 'identifier' is an array or JSON string
+                        $identifier = is_array($location->identifier) ? $location->identifier : json_decode($location->identifier, true);
+                        $telecom = is_array($location->telecom) ? $location->telecom : json_decode($location->telecom, true);
+                        $address = is_array($location->address) ? $location->address : json_decode($location->address, true);
+                    @endphp
+                    <tr>
+                        <?php $no++ ?>
+                        <td>{{ $no }}</td>
+                        <td>{{ $location->id_location }}</td>
+                        <td>{{ $location->name }}</td>
+                        <td>{{ isset($identifier[0]['value']) ? $identifier[0]['value'] : 'N/A' }}</td>
+                        <td>{{ $location->status }}</td>
+                        <td>{{ $address['country'] ?? 'N/A' }}</td>
+                        <td>{{ $address['city'] ?? 'N/A' }}</td>
+                        <td>{{ $address['line'][0] ?? 'N/A' }}</td>
+                        <td>{{ isset($telecom[0]['value']) ? $telecom[0]['value'] : 'N/A' }}</td>
+                        <td>{{ isset($telecom[1]['value']) ? $telecom[1]['value'] : 'N/A' }}</td>
+                        <td>{{ isset($telecom[2]['value']) ? $telecom[2]['value'] : 'N/A' }}</td>
+                        <td>{{ isset($telecom[3]['value']) ? $telecom[3]['value'] : 'N/A' }}</td>
+                        <td>{{ $location->description }}</td>
+                        <td>{{ $location->position_latitude }}</td>
+                        <td>{{ $location->position_longitude }}</td>
+                        <td>{{ $location->position_altitude }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>

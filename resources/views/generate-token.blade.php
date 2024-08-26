@@ -135,7 +135,8 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ route('patient.search-by-id') }}">Search</a>
-                            <a class="dropdown-item" href="{{ route('patient.create') }}">Create</a>
+                            <a class="dropdown-item" href="{{ route('patient.create-by-nik') }}">Create by NIK</a>
+                            <a class="dropdown-item" href="{{ route('patient.create-by-nik') }}">Create by Mother's NIK (Newborn)</a>
                         </div>
                     </div>
                 </div>
@@ -175,12 +176,12 @@
                 <div class="card">
                 <div class="card-body">
                     <div class="dropdown">
-                        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Medication
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{{ route('encounter.search-by-id') }}">Search</a>
-                            <a class="dropdown-item" href="{{ route('encounter.create') }}">Create</a>
+                            <a class="dropdown-item" href="{{ route('medication.search-by-id') }}">Search</a>
+                            <a class="dropdown-item" href="{{ route('medication.create') }}">Create</a>
                         </div>
                     </div>
                 </div>
@@ -190,27 +191,12 @@
                 <div class="card">
                 <div class="card-body">
                     <div class="dropdown">
-                        <button class="btn btn-danger dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Medication Request
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{{ route('condition.search-by-subject') }}">Search</a>
-                            <a class="dropdown-item" href="{{ route('condition.create') }}">Create</a>
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="card">
-                <div class="card-body">
-                    <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Medication Dispense
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="{{ route('composition.search-by-id') }}">Search</a>
-                            <a class="dropdown-item" href="{{ route('composition.create') }}">Create</a>
+                            <a class="dropdown-item" href="{{ route('medication.search-by-id') }}">Search</a>
+                            <a class="dropdown-item" href="{{ route('medication.create') }}">Create</a>
                         </div>
                     </div>
                 </div>

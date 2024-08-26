@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SsPatient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\AccessToken;
@@ -128,7 +129,7 @@ class PatientController extends Controller
 
     public function createByNik()
     {
-        return view('patient.create-by-nik');
+        return view('patient.form-add-by-nik');
     }
 
     public function storeByNik(Request $request)
@@ -160,7 +161,15 @@ class PatientController extends Controller
             'citizenship_status' => 'required',
         ]);
 
-        $response = Http::post(env('SATUSEHAT_FHIR_URL') . '/Patient', [
+        // Check for valid access token
+        $checkToken = AccessToken::find(1);
+        if ($checkToken && $checkToken->expired <= now()) {
+            return redirect()->route('satusehat.index');
+        }
+
+        $accessToken = AccessToken::find(1)->token;
+
+        $patientData = [
             "resourceType" => "Patient",
             "meta" => [
                 "profile" => [
@@ -317,16 +326,48 @@ class PatientController extends Controller
                     "valueCode" => $validatedData['citizenship_status']
                 ]
             ]
-        ]);
+        ];
 
-        // Check if the request was successful
-        if ($response->successful()) {
-            // Redirect or return a success message
-            return redirect()->route('patient.index')->with('success', 'Patient created successfully.');
-        } else {
-            // Handle error response
-            $error = $response->json();
-            return back()->with('error', 'Failed to create patient. Error: ' . json_encode($error));
+        try {
+            Log::info('Creating patient with data: ' . json_encode($patientData));
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $accessToken,
+                'Content-Type' => 'application/json'
+            ])->post(env('SATUSEHAT_FHIR_URL') . '/Patient', $patientData);
+
+            if ($response->successful()) {
+                // Simpan data ke dalam database lokal
+                SsPatient::create([
+                    'resource_type' => $patientData['resourceType'],
+                    'meta' => $patientData['meta'],
+                    'identifier' => $patientData['identifier'],
+                    'active' => $patientData['active'],
+                    'name' => $patientData['name'],
+                    'telecom' => $patientData['telecom'],
+                    'gender' => $patientData['gender'],
+                    'birth_date' => $patientData['birthDate'],
+                    'deceased_boolean' => $patientData['deceasedBoolean'],
+                    'address' => $patientData['address'],
+                    'marital_status' => $patientData['maritalStatus'],
+                    'multiple_birth_integer' => $patientData['multipleBirthInteger'],
+                    'contact' => $patientData['contact'],
+                    'communication' => $patientData['communication'],
+                    'extension' => $patientData['extension'],
+                ]);
+
+                return redirect()->route('patient.index')->with('success', 'Patient created successfully.');
+            } else {
+                Log::error('Failed to create patient: ' . $response->body());
+                $error = $response->json();
+                $errorMessage = 'Failed to create patient: ' . json_encode($error, JSON_PRETTY_PRINT);
+                return back()->with('error', $errorMessage);
+            }
+        } catch (\Exception $e) {
+            Log::error('Exception when creating patient: ' . $e->getMessage());
+            $errorMessage = 'Failed to create patient due to an exception: ' . $e->getMessage();
+            return back()->with('error', $errorMessage);
         }
     }
+
 }

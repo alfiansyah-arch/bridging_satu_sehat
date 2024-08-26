@@ -50,7 +50,13 @@
                 $('#organizations-table').DataTable();
             });
             $(document).ready(function() {
+                $('#local-organizations-table').DataTable();
+            });
+            $(document).ready(function() {
                 $('#location-table').DataTable();
+            });
+            $(document).ready(function() {
+                $('#database-location-table').DataTable();
             });
             $(document).ready(function() {
                 $('#encounter-table').DataTable();

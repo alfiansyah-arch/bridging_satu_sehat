@@ -34,25 +34,27 @@
                 </div>
             </div>
     @endif
-    <h1>Data Information Practitioners!</h1>
+    <h1>Data Information Patient!</h1>
     <div class="dropdown show">
         <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Cari Berdasarkan
         </a>
 
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="{{route('practitioner.search-by-id')}}">ID</a>
-            <a class="dropdown-item" href="{{route('practitioner.search-by-nik')}}">NIK</a>
-            <a class="dropdown-item" href="{{route('practitioner.search-by-name')}}">Name, Gender, and Birthdate</a>
+            <a class="dropdown-item" href="{{route('patient.search-by-id')}}">ID</a>
+            <a class="dropdown-item" href="{{route('patient.search-by-nik')}}">NIK</a>
+            <a class="dropdown-item" href="{{route('patient.search-by-bayi')}}">Bayi by NIK Ibu</a>
+            <a class="dropdown-item" href="{{route('patient.search-by-name-birth-nik')}}">Name, Birth, and NIK</a>
+            <a class="dropdown-item" href="{{route('patient.search-by-name-birth-gender')}}">Name, Birth, and Gender</a>
         </div>
     </div>
     <br>
     <div class="card mb-3">
         <div class="card-body">
-            <form action="{{ route('practitioner.search-by-nik') }}" method="GET">
+            <form action="{{ route('patient.search-by-nik') }}" method="GET">
                 <div class="form-group">
                     <label for="nik">Search by NIK:</label>
-                    <input type="text" class="form-control" id="nik" name="nik" placeholder="Enter practitioner NIK">
+                    <input type="text" class="form-control" id="nik" name="nik" placeholder="Enter patient NIK">
                 </div>
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
@@ -61,55 +63,29 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
-                <table id="practitioners-table" class="table display">
+                <table id="organizations-table" class="table display">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>NIK</th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Birth Date</th>
-                            <th>Address</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Action</th>
+                            <th>Active</th>
+                            <th>Identifier Use</th>
+                            <th>Identifier Value</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                        @if(isset($practitionerNik))
-                            @if($practitioner)
-                            <td>{{ $practitioner['entry'][0]['resource']['id'] }}</td>
-                            <td>{{ $practitioner['entry'][0]['resource']['identifier'][1]['value'] ?? 'N/A' }}</td>
-                            <td>
-                            @isset($practitioner['entry'][0]['resource']['name'][0]['prefix'])
-                            @foreach($practitioner['entry'][0]['resource']['name'][0]['prefix'] as $prefix)
-                                {{ $prefix }} 
-                            @endforeach 
-                            @endisset
-                            {{ $practitioner['entry'][0]['resource']['name'][0]['text'] ?? 'N/A' }} 
-                            @isset($practitioner['entry'][0]['resource']['name'][0]['suffix'])
-                            @foreach($practitioner['entry'][0]['resource']['name'][0]['suffix'] as $suffix)
-                                {{ $suffix }} 
-                            @endforeach
-                            @endisset
-                            </td>
-                            <td>{{ $practitioner['entry'][0]['resource']['gender'] ?? 'N/A' }}</td>
-                            <td>{{ $practitioner['entry'][0]['resource']['birthDate'] ?? 'N/A' }}</td>
-                            <td>{{ $practitioner['entry'][0]['resource']['address'][0]['line'][0] ?? 'N/A' }}, {{ $practitioner['entry'][0]['resource']['address'][0]['city'] ?? 'N/A' }}</td>
-                            <td>{{ $practitioner['entry'][0]['resource']['telecom'][0]['value'] ?? 'N/A' }}</td>
-                            <td>{{ $practitioner['entry'][0]['resource']['telecom'][2]['value'] ?? 'N/A' }}</td>
-                            <td>
-                                <div class="dropdown show">
-                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Aksi
-                                    </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="{{ route('practitioner.view', $practitioner['entry'][0]['resource']['id']) }}">View Detail</a>
-                                    </div>
-                                </div>
-                            </td>
+                        @if(isset($patientNik))
+                            @if($patient)
+                            <td>{{ $patient['entry'][0]['resource']['id'] ?? 'N/A' }}</td>
+                            @if($patient['entry'][0]['resource']['active'] == true)
+                            <td>Active</td>
+                            @elseif($patient['entry'][0]['resource']['active'] == false)
+                            <td>Inactive</td>
+                            @else
+                            <td>{{ $patient['entry'][0]['resource']['active'] ?? 'N/A' }}</td>
+                            @endif
+                            <td>{{ $patient['entry'][0]['resource']['identifier'][0]['use'] ?? 'N/A' }}</td>
+                            <td>{{ $patient['entry'][0]['resource']['identifier'][0]['value'] ?? 'N/A' }}</td>
                             @endif
                             @else
                             <td colspan="8" class="text-center">Data Tidak Ditemukan</td>

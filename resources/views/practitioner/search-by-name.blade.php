@@ -71,7 +71,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="birthdate">Birthdate:</label>
-                            <input type="text" class="form-control" id="birthdate" name="birthdate" placeholder="Enter practitioner birthdate" required>
+                            <input type="text" class="form-control" id="birthdate" name="birthdate" placeholder="Enter year birth of practitioner" required>
                         </div>
                     </div>
                 </div>
@@ -125,8 +125,6 @@
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                             <a class="dropdown-item" href="{{ route('practitioner.view', $entry['resource']['id'] ?? 'N/A') }}">View Detail</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
                                         </div>
                                     </div>
                                 </td>

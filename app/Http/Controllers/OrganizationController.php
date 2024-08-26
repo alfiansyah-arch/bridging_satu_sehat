@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\AccessToken;
+use App\Models\SsOrganization;
 use Illuminate\Support\Facades\Log;
 
 class OrganizationController extends Controller
@@ -13,7 +14,7 @@ class OrganizationController extends Controller
     {        
         $checkToken = AccessToken::find(1);
         if($checkToken && $checkToken->expired <= now()){
-            return redirect()->route('satusehat.index');
+            return redirect()->route('generate-token');
         }
         $accessToken = AccessToken::find(1)->token;
         $accessTokenExpiry = AccessToken::find(1)->expired;
@@ -25,7 +26,9 @@ class OrganizationController extends Controller
 
         $organization = $response->json();
 
-        return view('organization.search-by-id', compact('organization','organizationId','accessToken','accessTokenExpiry'));
+        $organizations = SsOrganization::all();
+
+        return view('organization.search-by-id', compact('organization','organizationId','accessToken','accessTokenExpiry','organizations'));
     }
 
     public function SearchName(Request $request)
@@ -44,7 +47,9 @@ class OrganizationController extends Controller
 
         $organization = $response->json();
 
-        return view('organization.search-by-name', compact('organization','organizationName','accessToken','accessTokenExpiry'));
+        $organizations = SsOrganization::all();
+
+        return view('organization.search-by-name', compact('organization','organizationName','accessToken','accessTokenExpiry','organizations'));
     }
 
     public function SearchPartOf(Request $request)
@@ -62,8 +67,10 @@ class OrganizationController extends Controller
         ])->get(env('SATUSEHAT_FHIR_URL').'/Organization?partof=' . $organizationPartOf);
     
         $organization = $response->json();
+
+        $organizations = SsOrganization::all();
     
-        return view('organization.search-by-partof', compact('organization','organizationPartOf','accessToken','accessTokenExpiry'));
+        return view('organization.search-by-partof', compact('organization','organizationPartOf','accessToken','accessTokenExpiry','organizations'));
     }
 
     public function createOrganization(Request $request)
@@ -75,8 +82,6 @@ class OrganizationController extends Controller
 
         $accessToken = AccessToken::find(1)->token;
 
-        $identifierSystem = 'http://sys-ids.kemkes.go.id/organization';
-
         try {
             $data = [
                 "resourceType" => "Organization",
@@ -84,7 +89,7 @@ class OrganizationController extends Controller
                 "identifier" => [
                     [
                         "use" => "official",
-                        "system" => $identifierSystem,
+                        "system" => "http://sys-ids.kemkes.go.id/organization",
                         "value" => $request->input('identifier_value')
                     ]
                 ],
@@ -163,6 +168,32 @@ class OrganizationController extends Controller
             ])->post(env('SATUSEHAT_FHIR_URL') . '/Organization', $data);
 
             if ($response->successful()) {
+                // Simpan data ke database lokal
+                $responseData = $response->json();
+                SsOrganization::updateOrCreate(
+                    ['id_organization' => $responseData['id']],
+                    [
+                    'id_organization' => $responseData['id'],
+                    'active' => $responseData['active'],
+                    'name' => $responseData['name'],
+                    'identifier_system' => $responseData['identifier'][0]['system'],
+                    'identifier_value' => $responseData['identifier'][0]['value'],
+                    'telecom_phone' => isset($responseData['telecom'][0]['value']) ? $responseData['telecom'][0]['value'] : null,
+                    'telecom_email' => isset($responseData['telecom'][1]['value']) ? $responseData['telecom'][1]['value'] : null,
+                    'telecom_url' => isset($responseData['telecom'][2]['value']) ? $responseData['telecom'][2]['value'] : null,
+                    'address_use' => $responseData['address'][0]['use'],
+                    'address_type' => $responseData['address'][0]['type'],
+                    'address_line' => isset($responseData['address'][0]['line'][0]) ? $responseData['address'][0]['line'][0] : null,
+                    'address_city' => $responseData['address'][0]['city'],
+                    'address_postal_code' => $responseData['address'][0]['postalCode'],
+                    'address_country' => $responseData['address'][0]['country'],
+                    'address_province_code' => $responseData['address'][0]['extension'][0]['extension'][0]['valueCode'],
+                    'address_city_code' => $responseData['address'][0]['extension'][0]['extension'][1]['valueCode'],
+                    'address_district_code' => $responseData['address'][0]['extension'][0]['extension'][2]['valueCode'],
+                    'address_village_code' => $responseData['address'][0]['extension'][0]['extension'][3]['valueCode'],
+                    'part_of_id' => isset($responseData['partOf']['reference']) ? str_replace('Organization/', '', $responseData['partOf']['reference']) : null,
+                ]);
+
                 return redirect()->route('organization.form')->with('success', 'Organization created successfully.');
             } else {
                 Log::error('Failed to create organization: ' . $response->body());
@@ -227,7 +258,7 @@ class OrganizationController extends Controller
                 "identifier" => [
                     [
                         "use" => "official",
-                        "system" => $request->input('identifier_system'),
+                        "system" => "http://sys-ids.kemkes.go.id/organization",
                         "value" => $request->input('identifier_value')
                     ]
                 ],
@@ -304,6 +335,31 @@ class OrganizationController extends Controller
             ])->put(env('SATUSEHAT_FHIR_URL') . '/Organization/' . $id, $data);
 
             if ($response->successful()) {
+                // Perbarui data di database lokal
+                $responseData = $response->json();
+                SsOrganization::updateOrCreate(
+                    ['id_organization' => $responseData['id']],
+                    [
+                        'name' => $responseData['name'],
+                        'identifier_system' => $responseData['identifier'][0]['system'],
+                        'identifier_value' => $responseData['identifier'][0]['value'],
+                        'telecom_phone' => isset($responseData['telecom'][0]['value']) ? $responseData['telecom'][0]['value'] : null,
+                        'telecom_email' => isset($responseData['telecom'][1]['value']) ? $responseData['telecom'][1]['value'] : null,
+                        'telecom_url' => isset($responseData['telecom'][2]['value']) ? $responseData['telecom'][2]['value'] : null,
+                        'address_use' => $responseData['address'][0]['use'],
+                        'address_type' => $responseData['address'][0]['type'],
+                        'address_line' => isset($responseData['address'][0]['line'][0]) ? $responseData['address'][0]['line'][0] : null,
+                        'address_city' => $responseData['address'][0]['city'],
+                        'address_postal_code' => $responseData['address'][0]['postalCode'],
+                        'address_country' => $responseData['address'][0]['country'],
+                        'address_province_code' => $responseData['address'][0]['extension'][0]['extension'][0]['valueCode'],
+                        'address_city_code' => $responseData['address'][0]['extension'][0]['extension'][1]['valueCode'],
+                        'address_district_code' => $responseData['address'][0]['extension'][0]['extension'][2]['valueCode'],
+                        'address_village_code' => $responseData['address'][0]['extension'][0]['extension'][3]['valueCode'],
+                        'part_of_id' => isset($responseData['partOf']['reference']) ? str_replace('Organization/', '', $responseData['partOf']['reference']) : null,
+                    ]
+                );
+
                 return redirect()->route('organization.search-by-id', ['id' => $id])->with('success', 'Organization updated successfully.');
             } else {
                 Log::error('Failed to update organization: ' . $response->body());
